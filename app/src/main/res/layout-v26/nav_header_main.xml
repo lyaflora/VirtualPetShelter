@@ -31,6 +31,8 @@
         android:id="@+id/tv_searchHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:autoSizeMinTextSize="20dp"
+        android:autoSizeTextType="uniform"
         android:background="@color/dark_teal"
         android:fontFamily="@font/best_school"
         android:paddingStart="25dp"
