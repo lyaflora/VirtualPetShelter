@@ -1,4 +1,4 @@
-package hu.bme.aut.android.virtualpetshelter.ui.home
+package hu.bme.aut.android.virtualpetshelter.ui.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import hu.bme.aut.android.virtualpetshelter.databinding.FragmentHomeBinding
+import hu.bme.aut.android.virtualpetshelter.databinding.FragmentPetlistBinding
 
-class HomeFragment : Fragment() {
+class PetlistFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
+    private var _binding: FragmentPetlistBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -23,12 +23,12 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+            ViewModelProvider(this).get(PetlistViewModel::class.java)
 
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentPetlistBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
+        val textView: TextView = binding.textPetlist
         homeViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
