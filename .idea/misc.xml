@@ -3,19 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/BME/MSc/MobilLabor/VirtualPetShelter/VirtualPetShelter/app/src/main/res/drawable/image_shadow.xml" value="0.2405" />
-        <entry key="..\:/BME/MSc/MobilLabor/VirtualPetShelter/VirtualPetShelter/app/src/main/res/drawable/side_nav_bar.xml" value="0.2405" />
-        <entry key="..\:/BME/MSc/MobilLabor/VirtualPetShelter/VirtualPetShelter/app/src/main/res/layout-v26/nav_header_main.xml" value="0.25" />
-        <entry key="..\:/BME/MSc/MobilLabor/VirtualPetShelter/VirtualPetShelter/app/src/main/res/layout/activity_main.xml" value="0.31354166666666666" />
-        <entry key="..\:/BME/MSc/MobilLabor/VirtualPetShelter/VirtualPetShelter/app/src/main/res/layout/app_bar_main.xml" value="0.31354166666666666" />
         <entry key="..\:/BME/MSc/MobilLabor/VirtualPetShelter/VirtualPetShelter/app/src/main/res/layout/content_main.xml" value="0.5541666666666667" />
-        <entry key="..\:/BME/MSc/MobilLabor/VirtualPetShelter/VirtualPetShelter/app/src/main/res/layout/fragment_gallery.xml" value="0.31354166666666666" />
-        <entry key="..\:/BME/MSc/MobilLabor/VirtualPetShelter/VirtualPetShelter/app/src/main/res/layout/fragment_home.xml" value="0.31354166666666666" />
-        <entry key="..\:/BME/MSc/MobilLabor/VirtualPetShelter/VirtualPetShelter/app/src/main/res/layout/fragment_slideshow.xml" value="0.31354166666666666" />
-        <entry key="..\:/BME/MSc/MobilLabor/VirtualPetShelter/VirtualPetShelter/app/src/main/res/layout/nav_header_main.xml" value="0.25" />
-        <entry key="..\:/BME/MSc/MobilLabor/VirtualPetShelter/VirtualPetShelter/app/src/main/res/menu/activity_main_drawer.xml" value="0.75" />
-        <entry key="..\:/BME/MSc/MobilLabor/VirtualPetShelter/VirtualPetShelter/app/src/main/res/menu/main.xml" value="0.31354166666666666" />
-        <entry key="..\:/BME/MSc/MobilLabor/VirtualPetShelter/VirtualPetShelter/app/src/main/res/mipmap-anydpi-v26/ic_logo.xml" value="0.2405" />
         <entry key="..\:/BME/MSc/VirtualPetShelter/app/src/main/res/layout/content_main.xml" value="0.5541666666666667" />
       </map>
     </option>

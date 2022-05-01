@@ -10,7 +10,4 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
-    <string name="menu_searchHeader">Search for pets</string>
-    <string name="nav_headerText">Virtual Pet Shelter</string>
-    <string name="nav_searchHeaderText">Search for pets!</string>
 </resources>
