@@ -1,17 +1,26 @@
 package hu.bme.aut.android.virtualpetshelter.network
 
 import hu.bme.aut.android.virtualpetshelter.model.Pet
-import okhttp3.ResponseBody
-import retrofit2.Call
+import hu.bme.aut.android.virtualpetshelter.model.PetListResponse
+import hu.bme.aut.android.virtualpetshelter.model.Token
 import retrofit2.http.*
 
 interface PetService {
 
-    @GET("pets")
-    suspend fun getPetList(): Call<ResponseBody>
+    @FormUrlEncoded
+    @POST("oauth2/token")
+    suspend fun getAccessToken(
+        @Field("grant_type") grantType: String,
+        @Field("client_id") clientId: String?,
+        @Field("client_secret") clientSecret: String?): Token
 
-    @GET("pet/{id}")
-    suspend fun getCharacter(@Path("id") id: Int): Call<ResponseBody>
+    @GET("animals")
+    suspend fun getPetList(): PetListResponse
+
+    @GET("animals/{id}")
+    suspend fun getPet(@Path("id") id: Int): Pet
+
+    // Not in actual public API
 
     @POST("pet/new")
     suspend fun addPet(@Body pet: Pet)
