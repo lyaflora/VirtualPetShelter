@@ -1,0 +1,446 @@
+swagger: "2.0"
+info:
+  description: "This is the API documentation of Virtual Pet Shelter."
+  version: "1.0.0"
+  title: "Virtual Pet Shelter"
+  contact:
+    email: "petrok.flora@gmail.com"
+host: "api.petfinder.com"
+basePath: "/v2"
+tags:
+- name: "pet"
+  description: "Everything about pets"
+- name: "store"
+  description: "Access to Petstore orders"
+- name: "user"
+  description: "Operations about user"
+schemes:
+- "https"
+- "http"
+paths:
+  /pet/new:
+    post:
+      tags:
+      - "pet"
+      summary: "Add a new pet to the virtual pet shelter"
+      description: "Not actually implemented in Petfinder API"
+      operationId: "addPet"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Pet object that needs to be added to the virtual pet shelter"
+        required: true
+        schema:
+          $ref: "#/definitions/Pet"
+      responses:
+        "401":
+          description: "Unauthorized"
+  /pet/update:
+    put:
+      tags:
+      - "pet"
+      summary: "Update an existing pet"
+      description: "Not actually implemented in Petfinder API"
+      operationId: "updatePet"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Pet object that needs to be added to the virtual pet shelter"
+        required: true
+        schema:
+          $ref: "#/definitions/Pet"
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "401":
+          description: "Unauthorized"
+        "404":
+          description: "Pet not found"
+  /pet/delete/{id}:
+    delete:
+      tags:
+      - "pet"
+      summary: "Deletes a pet"
+      description: "Not actually implemented in Petfinder API"
+      operationId: "deletePet"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "Pet id to delete"
+        required: true
+        type: "integer"
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "401":
+          description: "Unauthorized"
+        "404":
+          description: "Pet not found"
+  /animals/{id}:
+    get:
+      tags:
+      - "pet"
+      summary: "Find pet by ID"
+      description: "Returns a single pet"
+      operationId: "getPet"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of pet to return"
+        required: true
+        type: "integer"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Pet"
+        "400":
+          description: "Invalid ID supplied"
+        "401":
+          description: "Unauthorized"
+        "404":
+          description: "Pet not found"
+  /animals:
+    get:
+      tags:
+      - "pet"
+      summary: "Returns a list of all pets"
+      description: ""
+      operationId: "getPetList"
+      produces:
+      - "application/xml"
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/PetListResponse"
+        "401":
+          description: "Unauthorized"
+  /oauth2/token:
+    post:
+      tags:
+      - "auth"
+      summary: "Acquires a token to use PetFinder API."
+      description: "A token is active for 1 hour, after that it needs to be refreshed. To get a token, the user must possess an API key and a secret. Curerntly theres are hidden in the local.properties file for security reasons. The following parameters should actually be in the request header: grant_type (string), client_id (string), client_secret (string). The grant_type actually should be client_credentials, client_id is the API key, and client_secret is the secret. The encoding must be FormUrlEncoded!"
+      operationId: "getAccessToken"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      responses:
+        "401":
+          description: "Unauthorized"
+
+definitions:
+  Address:
+    type: "object"
+    properties:
+      address1:
+        type: "string"
+        example: "Example street 2"
+      address2:
+        type: "string"
+        example: "AB/2"
+      city:
+        type: "string"
+        example: "Miami"
+      state:
+        type: "string"
+        example: "Florida"
+      postcode:
+        type: "string"
+        example: "1234"
+      country:
+        type: "string"
+        example: "USA"
+    xml:
+      name: "Address"
+  Attributes:
+    type: "object"
+    properties:
+      spayed_neutered:
+        type: "boolean"
+        example: false
+      house_trained:
+        type: "boolean"
+        example: false
+      declawed:
+        type: "boolean"
+        example: true
+      special_needs:
+        type: "boolean"
+        example: false
+      shots_current:
+        type: "boolean"
+        example: false
+    xml:
+      name: "Attributes"
+  Breeds:
+    type: "object"
+    properties:
+      primary:
+        type: "string"
+        default: "German Shepherd"
+      secondary:
+        type: "string"
+        example: ""
+      mixed:
+        type: "boolean"
+        example: false
+      unknown:
+        type: "boolean"
+        example: false
+    xml:
+      name: "Breeds"
+  Colors:
+    type: "object"
+    properties:
+      primary:
+        type: "string"
+        example: "White"
+      secondary:
+        type: "string"
+        example: "Grey"
+      tertiary:
+        type: "string"
+        example: ""
+    xml:
+      name: "Colors"
+  Contact:
+    type: "object"
+    properties:
+      email:
+        type: "string"
+        example: "example@example.com"
+      phone:
+        type: "string"
+        example: "555-555-555"
+      address:
+        $ref: "#/definitions/Address"
+    xml:
+      name: "Contact"
+  Environment:
+    type: "object"
+    properties:
+      children:
+        type: "boolean"
+        example: true
+      dogs:
+        type: "string"
+        example: ""
+      cats:
+        type: "boolean"
+        example: false
+    xml:
+      name: "Environment"
+  Links:
+    type: "object"
+    properties:
+      self:
+        $ref: "#/definitions/Self"
+      type:
+        $ref: "#/definitions/Type"
+      organization:
+        $ref: "#/definitions/Organization"
+    xml:
+      name: "Links"
+  Organization:
+    type: "object"
+    properties:
+      href:
+        type: "string"
+        example: ""
+    xml:
+      name: "Organization"
+  Pagination:
+    type: "object"
+    properties:
+      count_per_page:
+        type: "integer"
+        example: ""
+      total_count:
+        type: "integer"
+        example: ""
+      current_page:
+        type: "integer"
+        example: ""
+      total_pages:
+        type: "integer"
+        example: ""
+      _links:
+        $ref: "#/definitions/Links"
+    xml:
+      name: "Pagination"
+  Photos:
+    type: "object"
+    properties:
+      small:
+        type: "string"
+        example: ""
+      medium:
+        type: "string"
+        example: ""
+      large:
+        type: "string"
+        example: ""
+      full:
+        type: "string"
+        example: ""
+    xml:
+      name: "Photos"
+  PrimaryPhotoCropped:
+    type: "object"
+    properties:
+      small:
+        type: "string"
+        example: ""
+      medium:
+        type: "string"
+        example: ""
+      large:
+        type: "string"
+        example: ""
+      full:
+        type: "string"
+        example: ""
+    xml:
+      name: "PrimaryPhotoCropped"
+  Self:
+    type: "object"
+    properties:
+      href:
+        type: "string"
+        example: ""
+    xml:
+      name: "Self"
+  Type:
+    type: "object"
+    properties:
+      href:
+        type: "string"
+        example: ""
+    xml:
+      name: "Type"
+  Videos:
+    type: "object"
+    properties:
+      embed:
+        type: "string"
+        example: ""
+    xml:
+      name: "Videos"
+  Pet:
+    type: "object"
+    required:
+    - "name"
+    - "photoUrls"
+    properties:
+      id:
+        type: "integer"
+      organization_id:
+        type: "string"
+        example: "012345"
+      url:
+        type: "string"
+        example: ""
+      type:
+        type: "string"
+        example: "dog"
+      species:
+        type: "string"
+        example: ""
+      breeds:
+        $ref: "#/definitions/Breeds"
+      colors:
+        $ref: "#/definitions/Colors"
+      age:
+        type: "string"
+        example: "2 years"
+      gender:
+        type: "string"
+        example: "Male"
+      size:
+        type: "string"
+        example: "Big"
+      coat:
+        type: "string"
+        example: ""
+      attributes:
+        $ref: "#/definitions/Attributes"
+      tags:
+        type: array
+        items:
+          type: string
+          example: "Playful"
+      name:
+        type: "string"
+        example: "Zeus"
+      description:
+        type: "string"
+        example: "Zeus is a very friendly doggie. He would love to be adopted by a lovely parent."
+      organization_animal_id:
+        type: "string"
+        example: "12345678ABC"
+      photos:
+        type: array
+        items:
+          $ref: "#/definitions/Photos"
+      primary_photo_cropped:
+        $ref: "#/definitions/PrimaryPhotoCropped"
+      videos:
+        type: array
+        items:
+          $ref: "#/definitions/Videos"
+      status:
+        type: "string"
+        example: ""
+      status_changed_at:
+        type: "string"
+        example: ""
+      published_at:
+        type: "string"
+        example: ""
+      distance:
+        type: "string"
+        example: ""
+      contact:
+        $ref: "#/definitions/Contact"
+      links:
+        $ref: "#/definitions/Links"
+    xml:
+      name: "Pet"
+  PetListResponse:
+    type: "object"
+    properties:
+      animals:
+        type: array
+        items:
+          $ref: "#/definitions/Pet"
+      status:
+        $ref: "#/definitions/Pagination"
+    xml:
+      name: "PetListResponse"
+externalDocs:
+  description: "GitHub repository"
+  url: "https://github.com/lyaflora/VirtualPetShelter"
