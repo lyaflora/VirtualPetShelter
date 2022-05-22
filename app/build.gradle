@@ -29,6 +29,7 @@ android {
     buildFeatures {
         dataBinding true
         viewBinding true
+        buildConfig true
     }
 
     defaultConfig {
@@ -37,6 +38,8 @@ android {
         targetSdk 32
         versionCode 1
         versionName "1.0"
+        buildConfigField "String", "API_KEY", getApiKey()
+        buildConfigField "String", "SECRET", getSecret()
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -45,8 +48,6 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "API_KEY", getApiKey()
-            buildConfigField "String", "SECRET", getSecret()
         }
     }
     compileOptions {
