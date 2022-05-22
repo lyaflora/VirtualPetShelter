@@ -28,6 +28,6 @@ jobs:
           SECRET: ${{ secrets.SECRET }}
         run: | 
           echo apiKey="$API_KEY" > ./local.properties
-          echo secret="$SECRET" > ./local.properties
+          echo secret="$SECRET" >> ./local.properties
       - name: Build with Gradle
         run: ./gradlew build
