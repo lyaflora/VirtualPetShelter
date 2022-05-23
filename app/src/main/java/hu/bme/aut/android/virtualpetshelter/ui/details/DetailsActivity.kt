@@ -8,13 +8,19 @@ import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import com.bumptech.glide.Glide
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import hu.bme.aut.android.virtualpetshelter.R
+import hu.bme.aut.android.virtualpetshelter.analytics.FireBaseAnalyticsLogger
 import hu.bme.aut.android.virtualpetshelter.databinding.ActivityDetailsBinding
 import hu.bme.aut.android.virtualpetshelter.ui.main.MainViewModel
 
 @AndroidEntryPoint
 class DetailsActivity : AppCompatActivity() {
+
+    private lateinit var analytics: FirebaseAnalytics
 
     private lateinit var binding: ActivityDetailsBinding
 
@@ -22,6 +28,7 @@ class DetailsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        analytics = Firebase.analytics
         binding = ActivityDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val petId = intent.getIntExtra("petId", -1)
@@ -50,13 +57,13 @@ class DetailsActivity : AppCompatActivity() {
             binding.tvPetContactEmail.text = "Contact e-mail: ${pet.contact?.email}"
             binding.tvPetContactPhone.text = "Contact phone: ${pet.contact?.phone}"
             binding.btnOpenPetfinder.setOnClickListener {
+                FireBaseAnalyticsLogger.logPetOpenedInPetfinder(analytics, pet.name!!, pet.type!!, pet.breeds?.primary!!, pet.gender!!)
                 val petFinderURL = pet.url
                 val openURL = Intent(Intent.ACTION_VIEW)
                 openURL.data = Uri.parse(petFinderURL)
                 startActivity(openURL)
             }
         }
-
         detailsViewModel.getById(petId)
     }
 }

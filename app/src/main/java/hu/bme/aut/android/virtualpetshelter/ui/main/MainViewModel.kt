@@ -33,9 +33,6 @@ class MainViewModel @Inject constructor(
                 petTypes.postValue(types!!)
                 val breeds = mainRepository.getPetBreeds()
                 petBreeds.postValue(breeds!!)
-                selectedType.postValue("")
-                selectedBreed.postValue("")
-                selectedGender.postValue("")
                 loading.postValue(false)
             }
             catch ( e : Exception )
