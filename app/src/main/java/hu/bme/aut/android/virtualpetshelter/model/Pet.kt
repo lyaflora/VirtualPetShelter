@@ -6,7 +6,7 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-@Entity
+@Entity(tableName = "pets")
 data class Pet (
     @PrimaryKey
     @SerializedName("id"                     ) var id                   : Int?,
@@ -31,7 +31,7 @@ data class Pet (
     @SerializedName("description"            ) var description          : String?,
     @SerializedName("organization_animal_id" ) var organizationAnimalId : String?,
     @SerializedName("photos"                 ) var photos               : List<Photos>,
-    @Embedded
+    @Embedded(prefix = "primary_photo_cropped_")
     @SerializedName("primary_photo_cropped"  ) var primaryPhotoCropped  : PrimaryPhotoCropped?,
     @Ignore
     @SerializedName("videos"                 ) var videos               : List<Videos>,
@@ -42,7 +42,7 @@ data class Pet (
     @Embedded
     @SerializedName("contact"                ) var contact              : Contact?,
     @Embedded
-    @SerializedName("_links"                 ) var Links                : Links?
+    @SerializedName("links"                 ) var Links                : Links?
 
 ) {
     constructor() : this (null,
