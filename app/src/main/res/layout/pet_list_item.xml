@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="5dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="5dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:id="@+id/ivPetImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:layout_gravity="center"
+            android:scaleType="center"
+            android:contentDescription="@string/item_petlist_desc"
+            android:src="@mipmap/ic_launcher"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/tvPetName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="7dp"
+            android:paddingTop="70dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:gravity="bottom|center"
+            android:text="Pet name"
+            android:textColor="@color/teal_200"
+            android:background="@drawable/black_gradient"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="@id/ivPetImage"
+            app:layout_constraintStart_toStartOf="@id/ivPetImage"
+            app:layout_constraintEnd_toEndOf="@id/ivPetImage"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

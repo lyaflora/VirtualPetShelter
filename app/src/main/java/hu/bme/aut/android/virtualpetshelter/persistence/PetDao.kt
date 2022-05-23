@@ -9,38 +9,68 @@ interface PetDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPet(pet: Pet)
 
-    @Query("SELECT * FROM Pet")
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(petList: List<Pet>)
+
+    @Query("SELECT * FROM pets")
     suspend fun getPetList(): List<Pet>
 
-    @Query("SELECT * FROM Pet WHERE id = :id")
+    @Query("SELECT * FROM pets WHERE primary_photo_cropped_small IS NOT NULL")
+    suspend fun getPetListWithPhotos(): List<Pet>?
+
+    @Query("DELETE FROM pets WHERE primary_photo_cropped_small IS NULL")
+    suspend fun deletePetsWithoutPicture()
+
+    @Query("SELECT * FROM pets WHERE id = :id")
     suspend fun getPet(id: Int): Pet?
 
-    @Query("SELECT * FROM Pet WHERE name LIKE '%' || :nameSearchString || '%'")
+    @Query("SELECT * FROM pets WHERE name LIKE '%' || :nameSearchString || '%'")
     suspend fun getPetsByNameSearch(nameSearchString: String): List<Pet>?
 
-    @Query("SELECT * FROM Pet WHERE type LIKE '%' || :typeSearchString || '%'")
+    @Query("SELECT * FROM pets WHERE type LIKE '%' || :typeSearchString || '%'")
     suspend fun getPetsByTypeSearch(typeSearchString: String): List<Pet>?
 
-    @Query("SELECT * FROM Pet WHERE breeds_primary LIKE '%' || :breedSearchString || '%'")
+    @Query("SELECT * FROM pets WHERE breeds_primary LIKE '%' || :breedSearchString || '%'")
     suspend fun getPetsByBreedSearch(breedSearchString: String): List<Pet>?
 
-    @Query("SELECT * FROM Pet WHERE colors_primary = :color ")
+    @Query("SELECT * FROM pets WHERE colors_primary = :color ")
     suspend fun getPetsByColor(color: String): List<Pet>?
 
-    @Query("SELECT * FROM Pet WHERE type = :type")
+    @Query("SELECT * FROM pets WHERE type = :type")
     suspend fun getPetsByType(type: String): List<Pet>?
 
-    @Query("SELECT DISTINCT type FROM Pet")
+    @Query("SELECT * FROM pets WHERE breeds_primary = :breed")
+    suspend fun getPetsByBreed(breed: String): List<Pet>?
+
+    @Query("SELECT * FROM pets WHERE type = :type AND breeds_primary = :breed")
+    suspend fun getPetsByTypeAndBreed(type: String, breed: String): List<Pet>?
+
+    @Query("SELECT * FROM pets WHERE type = :type AND gender = :gender")
+    suspend fun getPetsByTypeAndGender(type: String, gender: String): List<Pet>?
+
+    @Query("SELECT * FROM pets WHERE breeds_primary = :breed AND gender = :gender")
+    suspend fun getPetsByBreedAndGender(breed: String, gender: String): List<Pet>?
+
+    @Query("SELECT * FROM pets WHERE type = :type AND breeds_primary = :breed AND gender = :gender")
+    suspend fun getPetsByTypeAndBreedAndGender(type: String, breed: String, gender: String): List<Pet>?
+
+    @Query("SELECT DISTINCT type FROM pets")
     suspend fun getPetTypes(): List<String>?
 
-    @Query("SELECT DISTINCT breeds_primary FROM Pet")
+    @Query("SELECT DISTINCT breeds_primary FROM pets")
     suspend fun getPetBreeds(): List<String>?
 
-    @Query("SELECT DISTINCT colors_primary FROM Pet")
+    @Query("SELECT DISTINCT breeds_primary FROM pets WHERE type = :type")
+    suspend fun getPetBreedsByType(type: String): List<String>?
+
+    @Query("SELECT DISTINCT colors_primary FROM pets")
     suspend fun getPetColors(): List<String>?
 
-    @Query("SELECT * FROM Pet WHERE gender = :gender")
+    @Query("SELECT * FROM pets WHERE gender = :gender")
     suspend fun getPetsByGender(gender: String): List<Pet>?
+
+    @Query("SELECT COUNT(*) FROM pets")
+    suspend fun getDBsize(): Int
 
     @Delete
     suspend fun deletePet(pet: Pet)

@@ -15,7 +15,10 @@ interface PetService {
         @Field("client_secret") clientSecret: String?): Token
 
     @GET("animals")
-    suspend fun getPetList(): PetListResponse
+    suspend fun getPetList(
+        @Query("limit") limit: Int,
+        @Query("page") page: Int
+    ): PetListResponse
 
     @GET("animals/{id}")
     suspend fun getPet(@Path("id") id: Int): Pet

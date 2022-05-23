@@ -1,67 +1,183 @@
 package hu.bme.aut.android.virtualpetshelter.ui.main
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
+import android.util.TypedValue
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.TextView
 import androidx.activity.viewModels
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.navigation.NavigationView
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import hu.bme.aut.android.virtualpetshelter.R
 import hu.bme.aut.android.virtualpetshelter.databinding.ActivityMainBinding
-import hu.bme.aut.android.virtualpetshelter.network.PetService
-import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private lateinit var petListRecyclerViewAdapter: PetListRecyclerViewAdapter
 
+    private var nightMode: Int = 0
     private val mainViewModel: MainViewModel by viewModels()
+
+    private fun setupRecyclerView(view: View) {
+        petListRecyclerViewAdapter = PetListRecyclerViewAdapter(this)
+        val rvPetList = view.findViewById<RecyclerView>(R.id.rvPetList)
+        rvPetList.adapter = petListRecyclerViewAdapter
+        rvPetList.layoutManager = GridLayoutManager(this, 2)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setupRecyclerView(binding.root)
 
-        setSupportActionBar(binding.appBarMain.toolbar)
+        nightMode = resources.configuration.uiMode
 
-        binding.appBarMain.fab.setOnClickListener { view ->
-            mainViewModel.getPetList()
-            val petList = mainViewModel.petList.value
-//            Log.d("LoadPets", petList.toString())
-        }
+        val toolbar = binding.petlist.appBarMain.toolbar
         val drawerLayout: DrawerLayout = binding.drawerLayout
-        val navView: NavigationView = binding.navView
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.nav_search
-            ), drawerLayout
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+        val loadingIndicator = binding.petlist.loadingIndicator
+        val typeSpinner = binding.spPetType
+        val breedSpinner = binding.spPetBreed
+        val genderSpinner = binding.spPetGender
+
+        mainViewModel.petList.observe(
+            this
+        ) { petList -> petListRecyclerViewAdapter.updateList(petList) }
+
+        mainViewModel.loading.observe(
+            this
+        ) { loading ->
+            if (loading) {
+                loadingIndicator.root.visibility = View.VISIBLE
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+            }
+            else {
+                loadingIndicator.root.visibility = View.GONE
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+            }
+        }
+
+        mainViewModel.loadPetListWithPhotos()
+
+        setSupportActionBar(toolbar)
+
+        toolbar.setNavigationOnClickListener { drawerLayout.open() }
+
+        binding.btnBack.setOnClickListener { drawerLayout.close() }
+
+        mainViewModel.petTypes.observe(
+            this
+        ) { types ->
+            ArrayAdapter(
+                this,
+                android.R.layout.simple_spinner_item,
+                listOf("Select pet type!") + types
+            ).also { adapter ->
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                typeSpinner.adapter = adapter
+            }
+        }
+
+        typeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                val typedValue = TypedValue()
+                theme.resolveAttribute(androidx.appcompat.R.attr.subtitleTextColor, typedValue, true);
+                val color = typedValue.data;
+                (parent.getChildAt(0) as TextView).setTextColor(color)
+                (parent.getChildAt(0) as TextView).textSize = 20f
+                val selectedType = parent.getItemAtPosition(position).toString()
+                mainViewModel.updateSelectedPetType(selectedType)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+        mainViewModel.petBreeds.observe(
+            this
+        ) { breeds ->
+            ArrayAdapter(
+                this,
+                android.R.layout.simple_spinner_item,
+                listOf("Select pet breed!") + breeds
+            ).also { adapter ->
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                breedSpinner.adapter = adapter
+            }
+        }
+
+        breedSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                val typedValue = TypedValue()
+                theme.resolveAttribute(androidx.appcompat.R.attr.subtitleTextColor, typedValue, true);
+                val color = typedValue.data;
+                (parent.getChildAt(0) as TextView).setTextColor(color)
+                (parent.getChildAt(0) as TextView).textSize = 20f
+                val selectedBreed = parent.getItemAtPosition(position).toString()
+                mainViewModel.updateSelectedPetBreed(selectedBreed)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+        ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item,
+            listOf("Select pet gender!") + listOf("Male", "Female")
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            genderSpinner.adapter = adapter
+        }
+
+        genderSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                val typedValue = TypedValue()
+                theme.resolveAttribute(androidx.appcompat.R.attr.subtitleTextColor, typedValue, true);
+                val color = typedValue.data;
+                (parent.getChildAt(0) as TextView).setTextColor(color)
+                (parent.getChildAt(0) as TextView).textSize = 20f
+                val selectedGender = parent.getItemAtPosition(position).toString()
+                mainViewModel.updateSelectedPetGender(selectedGender)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
-        return true
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        val currentNightMode = newConfig.uiMode
+        if (currentNightMode != nightMode) {
+            val thisIntent = intent
+            finish()
+            startActivity(thisIntent)
+        }
+        nightMode = currentNightMode
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
-    }
 }
