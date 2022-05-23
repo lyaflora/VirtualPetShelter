@@ -12,4 +12,9 @@
     <string name="menu_slideshow">Slideshow</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="item_petlist_desc">Pet image</string>
+    <string name="main_tv_pet_type">Pet type</string>
+    <string name="main_tv_pet_breed">Pet breed</string>
+    <string name="main_back_arrow_desc">Back arrow that closes drawer</string>
+    <string name="main_tv_pet_gender">Pet gender</string>
 </resources>
