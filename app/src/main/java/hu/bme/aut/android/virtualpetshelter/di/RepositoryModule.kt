@@ -8,6 +8,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 import hu.bme.aut.android.virtualpetshelter.network.PetService
 import hu.bme.aut.android.virtualpetshelter.persistence.PetDao
+import hu.bme.aut.android.virtualpetshelter.ui.details.DetailsRepository
 import hu.bme.aut.android.virtualpetshelter.ui.main.MainRepository
 
 @Module
@@ -20,5 +21,13 @@ object RepositoryModule {
         petDao: PetDao
     ): MainRepository {
         return MainRepository(petService, petDao)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideDetailsRepository(
+        petDao: PetDao
+    ): DetailsRepository {
+        return DetailsRepository(petDao)
     }
 }
