@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import hu.bme.aut.android.virtualpetshelter.R
@@ -43,6 +44,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         analytics = Firebase.analytics
+
+        FirebaseCrashlytics.getInstance().setUserId("Crashlytics test user")
+        analytics.setUserId("Google Analytics test user")
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

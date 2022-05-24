@@ -1,9 +1,9 @@
 package hu.bme.aut.android.virtualpetshelter.ui.main
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hu.bme.aut.android.virtualpetshelter.model.Pet
 import kotlinx.coroutines.*
@@ -13,6 +13,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val mainRepository: MainRepository
 ) : ViewModel() {
+
     val petList = MutableLiveData<List<Pet>>()
     val loading = MutableLiveData<Boolean>()
     val petTypes = MutableLiveData<List<String>>()
@@ -37,6 +38,8 @@ class MainViewModel @Inject constructor(
             }
             catch ( e : Exception )
             {
+                FirebaseCrashlytics.getInstance().log("Loading pet list failed")
+                FirebaseCrashlytics.getInstance().recordException(e)
                 e.printStackTrace()
             }
         }
@@ -84,6 +87,8 @@ class MainViewModel @Inject constructor(
                         mainRepository.getPetsByTypeAndBreedAndGender(selectedType.value!!, selectedBreed.value!!, selectedGender.value!!)
                 petList.postValue(filteredPets!!)
             } catch (e: Exception) {
+                FirebaseCrashlytics.getInstance().log("Query for filtered pet list failed")
+                FirebaseCrashlytics.getInstance().recordException(e)
                 e.printStackTrace()
             }
         }
@@ -99,6 +104,8 @@ class MainViewModel @Inject constructor(
                         mainRepository.getPetBreedsByType(type)
                 petBreeds.postValue(breeds!!)
             } catch (e: Exception) {
+                FirebaseCrashlytics.getInstance().log("Updating breeds based on selected type failed")
+                FirebaseCrashlytics.getInstance().recordException(e)
                 e.printStackTrace()
             }
         }

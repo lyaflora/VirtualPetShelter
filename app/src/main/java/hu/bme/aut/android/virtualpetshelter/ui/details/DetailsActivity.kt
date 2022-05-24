@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import com.bumptech.glide.Glide
@@ -12,10 +11,8 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
-import hu.bme.aut.android.virtualpetshelter.R
 import hu.bme.aut.android.virtualpetshelter.analytics.FireBaseAnalyticsLogger
 import hu.bme.aut.android.virtualpetshelter.databinding.ActivityDetailsBinding
-import hu.bme.aut.android.virtualpetshelter.ui.main.MainViewModel
 
 @AndroidEntryPoint
 class DetailsActivity : AppCompatActivity() {
