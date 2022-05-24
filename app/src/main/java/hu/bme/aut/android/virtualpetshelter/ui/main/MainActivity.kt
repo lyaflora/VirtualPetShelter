@@ -2,7 +2,6 @@ package hu.bme.aut.android.virtualpetshelter.ui.main
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.widget.AdapterView
@@ -13,13 +12,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import hu.bme.aut.android.virtualpetshelter.R
+import hu.bme.aut.android.virtualpetshelter.analytics.FireBaseAnalyticsLogger
 import hu.bme.aut.android.virtualpetshelter.databinding.ActivityMainBinding
 
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var analytics: FirebaseAnalytics
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var petListRecyclerViewAdapter: PetListRecyclerViewAdapter
@@ -36,6 +42,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        analytics = Firebase.analytics
+
+        FirebaseCrashlytics.getInstance().setUserId("Crashlytics test user")
+        analytics.setUserId("Google Analytics test user")
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -71,9 +82,15 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
 
-        toolbar.setNavigationOnClickListener { drawerLayout.open() }
+        toolbar.setNavigationOnClickListener {
+            drawerLayout.open()
+            FireBaseAnalyticsLogger.logButtonClicked(analytics, "btn_drawer_open")
+        }
 
-        binding.btnBack.setOnClickListener { drawerLayout.close() }
+        binding.btnBack.setOnClickListener {
+            drawerLayout.close()
+            FireBaseAnalyticsLogger.logButtonClicked(analytics, "btn_drawer_close")
+        }
 
         mainViewModel.petTypes.observe(
             this
@@ -102,6 +119,7 @@ class MainActivity : AppCompatActivity() {
                 (parent.getChildAt(0) as TextView).textSize = 20f
                 val selectedType = parent.getItemAtPosition(position).toString()
                 mainViewModel.updateSelectedPetType(selectedType)
+                FireBaseAnalyticsLogger.logFilterSelected(analytics, "type", selectedType)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -134,6 +152,7 @@ class MainActivity : AppCompatActivity() {
                 (parent.getChildAt(0) as TextView).textSize = 20f
                 val selectedBreed = parent.getItemAtPosition(position).toString()
                 mainViewModel.updateSelectedPetBreed(selectedBreed)
+                FireBaseAnalyticsLogger.logFilterSelected(analytics, "breed", selectedBreed)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -162,6 +181,7 @@ class MainActivity : AppCompatActivity() {
                 (parent.getChildAt(0) as TextView).textSize = 20f
                 val selectedGender = parent.getItemAtPosition(position).toString()
                 mainViewModel.updateSelectedPetGender(selectedGender)
+                FireBaseAnalyticsLogger.logFilterSelected(analytics, "gender", selectedGender)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "345896478516",
+    "project_id": "virtualpetshelter",
+    "storage_bucket": "virtualpetshelter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:345896478516:android:4c99621fcb9d70c2a42761",
+        "android_client_info": {
+          "package_name": "hu.bme.aut.android.virtualpetshelter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "345896478516-7ckbc5lkdraj6emd7v5l66l5h10nmlvg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4oRHiTERYrBEWgQ23F2BXhf1Id8PKtjM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "345896478516-7ckbc5lkdraj6emd7v5l66l5h10nmlvg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

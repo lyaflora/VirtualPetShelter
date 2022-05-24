@@ -10,6 +10,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
+import hu.bme.aut.android.virtualpetshelter.analytics.FireBaseAnalyticsLogger
 import hu.bme.aut.android.virtualpetshelter.databinding.PetListItemBinding
 import hu.bme.aut.android.virtualpetshelter.model.Pet
 import hu.bme.aut.android.virtualpetshelter.ui.details.DetailsActivity
@@ -17,12 +21,15 @@ import hu.bme.aut.android.virtualpetshelter.ui.details.DetailsActivity
 
 class PetListRecyclerViewAdapter(private val context: Context) : RecyclerView.Adapter<PetListRecyclerViewAdapter.ViewHolder>() {
 
+    private lateinit var analytics: FirebaseAnalytics
+
     private lateinit var binding: PetListItemBinding
 
     private var petList = mutableListOf<Pet>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         binding = PetListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        analytics = Firebase.analytics
         return ViewHolder(binding.root)
     }
 
@@ -72,6 +79,7 @@ class PetListRecyclerViewAdapter(private val context: Context) : RecyclerView.Ad
 
         init {
             itemView.setOnClickListener {
+                FireBaseAnalyticsLogger.logPetDetailsOpened(analytics, pet?.name!!, pet?.type!!, pet?.breeds?.primary!!, pet?.gender!!)
                 val detailsIntent = Intent(context, DetailsActivity::class.java)
                 detailsIntent.putExtra("petId", pet?.id)
                 context.startActivity(detailsIntent)

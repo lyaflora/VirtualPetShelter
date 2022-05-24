@@ -1,12 +1,11 @@
 package hu.bme.aut.android.virtualpetshelter.ui.details
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hu.bme.aut.android.virtualpetshelter.model.Pet
-import hu.bme.aut.android.virtualpetshelter.ui.main.MainRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,6 +22,8 @@ class DetailsViewModel @Inject constructor(
                 val petById = detailsRepository.getPet(id)
                 pet.postValue(petById!!)
             } catch (e: Exception) {
+                FirebaseCrashlytics.getInstance().log("Getting pet by ID failed")
+                FirebaseCrashlytics.getInstance().recordException(e)
                 e.printStackTrace()
             }
         }
